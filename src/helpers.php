@@ -24,6 +24,10 @@ if (! function_exists('upload')) {
         if (!is_array($file)) {
             $file = [$file];
         }
+
+        // 过滤所有的.符号 
+        $path = str_replace('.', '', $path);
+
         // 先去除两边空格
         $path = trim($path, '/');
 
