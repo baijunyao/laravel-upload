@@ -3,12 +3,23 @@ namespace Baijunyao\LaravelUpload;
 
 class Upload
 {
+
+    /**
+     * 上传文件
+     *
+     * @param        $name            form 表单中的 name
+     * @param string $path            文件保存的目录 相对于 /public 目录
+     * @param array  $allowExtension  允许上传的文件后缀
+     * @param bool   $childPath       是否按日期创建目录
+     *
+     * @return array
+     */
     public static function file($name, $path = 'uploads', $allowExtension = [], $childPath = true)
     {
         // 判断请求中是否包含name=file的上传文件
         if (!request()->hasFile($name)) {
             $data=[
-                'status_code' => 501,
+                'status_code' => 401,
                 'message' => '上传文件为空'
             ];
             return $data;
@@ -91,8 +102,24 @@ class Upload
         return $data;
     }
 
-
-
-
+    /**
+     * 上传图片
+     *
+     * @param        $name
+     * @param string $path
+     *
+     * @return array
+     */
+    public static function image($name, $path = 'uploads')
+    {
+        $allowExtension = [
+            'jpg',
+            'jpeg',
+            'png',
+            'gif',
+            'bmp'
+        ];
+        return self::file($name, $path, $allowExtension);
+    }
 
 }
