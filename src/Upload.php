@@ -3,7 +3,7 @@ namespace Baijunyao\LaravelUpload;
 
 class Upload
 {
-    public static function file($name, $path = 'uploads', $childPath = true)
+    public static function file($name, $path = 'uploads', $allowExtension = [], $childPath = true)
     {
         // 判断请求中是否包含name=file的上传文件
         if (!request()->hasFile($name)) {
@@ -13,6 +13,7 @@ class Upload
             ];
             return $data;
         }
+
         $file = request()->file($name);
 
         // 判断是否多文件上传
@@ -50,8 +51,22 @@ class Upload
             }
             // 获取上传的文件名
             $oldName = $v->getClientOriginalName();
+
+            // 获取文件后缀
+            $extension = strtolower($v->getClientOriginalExtension());
+
+            // 判断是否是允许的文件类型
+            if (!empty($allowExtension) && !in_array($extension, $allowExtension)) {
+                $data=[
+                    'status_code' => 500,
+                    'message' => $oldName . '的文件类型不被允许'
+                ];
+                return $data;
+            }
+
             // 组合新的文件名
-            $newName = uniqid().'.'.$v->getClientOriginalExtension();
+            $newName = uniqid() . '.' . $extension;
+
             // 判断上传是否失败
             if (!$v->move($publicPath, $newName)) {
                 $data=[
@@ -66,6 +81,7 @@ class Upload
                 ];
             }
         }
+
         //上传成功
         $data=[
             'status_code' => 200,
