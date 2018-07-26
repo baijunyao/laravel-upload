@@ -1,15 +1,10 @@
 <?php
+namespace Baijunyao\LaravelUpload;
 
-if (! function_exists('upload')) {
-    /**
-     * 上传文件函数
-     *
-     * @param $name             表单的name名
-     * @param string $path      上传的路径 相对于public目录
-     * @param bool $childPath   是否根据日期生成子目录
-     * @return array            上传的状态
-     */
-    function upload($name, $path = 'uploads', $childPath = true){
+class Upload
+{
+    public static function file($name, $path = 'uploads', $childPath = true)
+    {
         // 判断请求中是否包含name=file的上传文件
         if (!request()->hasFile($name)) {
             $data=[
@@ -25,7 +20,7 @@ if (! function_exists('upload')) {
             $file = [$file];
         }
 
-        // 过滤所有的.符号 
+        // 过滤所有的.符号
         $path = str_replace('.', '', $path);
 
         // 先去除两边空格
@@ -79,4 +74,9 @@ if (! function_exists('upload')) {
         ];
         return $data;
     }
+
+
+
+
+
 }

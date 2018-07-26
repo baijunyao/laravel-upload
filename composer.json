@@ -13,9 +13,6 @@
     "autoload": {
         "psr-4": {
             "Baijunyao\\LaravelUpload\\": "src/"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
+        }
     }
 }
